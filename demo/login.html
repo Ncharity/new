@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Log In</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div id="app">
+        <form @submit.prevent="submitLogin">
+            <h2>Log In</h2>
+            <div>
+                <label for="email">Email</label>
+                <input type="email" id="email" v-model="email" required>
+            </div>
+            <div>
+                <label for="password">Password</label>
+                <input type="password" id="password" v-model="password" required>
+            </div>
+            <div class="button-container">
+                <button type="submit" :disabled="loading">
+                    <span v-if="loading">Logging In...</span>
+                    <span v-else>Log In</span>
+                </button>
+            </div>
+            <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+        </form>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data: {
+                email: '',
+                password: '',
+                loading: false
+            },
+            methods: {
+                submitLogin() {
+                    this.loading = true;
+                    // Handle log-in logic here (e.g., send data to backend)
+                    axios.post('/login', {
+                        email: this.email,
+                        password: this.password
+                    })
+                    .then(() => {
+                        alert('Successfully logged in!');
+                    })
+                    .catch(err => {
+                        console.error('Login failed:', err);
+                    })
+                    .finally(() => {
+                        this.loading = false;
+                    });
+                }
+            }
+        });
+    </script>
+</body>
+</html>
